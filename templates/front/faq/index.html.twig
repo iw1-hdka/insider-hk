@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Faq index{% endblock %}
+
+{% block body %}
+    <h1>Faq index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for faq in faqs %}
+            <tr>
+                <td>{{ faq.id }}</td>
+                <td>{{ faq.question }}</td>
+                <td>{{ faq.answer }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
