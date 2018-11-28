@@ -131,4 +131,12 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return null|string
+     */
+    public function __toString(): ?string
+    {
+        return $this->getTitle();
+    }
 }

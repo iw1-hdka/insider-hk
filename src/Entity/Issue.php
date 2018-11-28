@@ -40,14 +40,14 @@ class Issue
     private $status;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private $upvote;
+    private $upvote = 0;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private $downvote;
+    private $downvote = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -63,6 +63,11 @@ class Issue
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="issue")
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $user;
 
     public function __construct()
     {
@@ -134,6 +139,13 @@ class Issue
         return $this;
     }
 
+    public function addUpvote(): self
+    {
+        $this->upvote += 1;
+
+        return $this;
+    }
+
     public function getDownvote(): ?int
     {
         return $this->downvote;
@@ -142,6 +154,13 @@ class Issue
     public function setDownvote(int $downvote): self
     {
         $this->downvote = $downvote;
+
+        return $this;
+    }
+
+    public function addDownvote(): self
+    {
+        $this->downvote += 1;
 
         return $this;
     }
@@ -197,6 +216,18 @@ class Issue
                 $comment->setIssue(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
