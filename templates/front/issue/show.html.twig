@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Issue{% endblock %}
+
+{% block body %}
+    <h1>Issue</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ issue.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ issue.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ issue.description }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ issue.status }}</td>
+            </tr>
+            <tr>
+                <th>Upvote</th>
+                <td>{{ issue.upvote }}</td>
+            </tr>
+            <tr>
+                <th>Downvote</th>
+                <td>{{ issue.downvote }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ issue.type }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ issue.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_front_issue_index') }}">back to list</a>
+
+    {% if app.user is same as(issue.user) %}
+        <a href="{{ path('app_front_issue_edit', {'id': issue.id}) }}">edit</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ include('back/project/_delete_form.html.twig') }}
+    {% endif %}
+
+{% endblock %}

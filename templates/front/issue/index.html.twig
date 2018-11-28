@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Issue index{% endblock %}
+
+{% block body %}
+    <h1>Issue index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Upvote</th>
+                <th>Downvote</th>
+                <th>Type</th>
+                <th>Slug</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for issue in issues %}
+            <tr>
+                <td>{{ issue.id }}</td>
+                <td>{{ issue.title }}</td>
+                <td>{{ issue.description }}</td>
+                <td>{{ issue.status }}</td>
+                <td>
+                    <form method="post" action="{{ path('app_front_issue_upvote', {'id': issue.id}) }}">
+                        <button type="submit">{{ issue.upvote }}</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('app_front_issue_downvote', {'id': issue.id}) }}">
+                        <button type="submit">{{ issue.downvote }}</button>
+                    </form>
+                </td>
+                <td>{{ issue.type }}</td>
+                <td>{{ issue.slug }}</td>
+                <td>
+                    <a href="{{ path('app_front_issue_show', {'id': issue.id}) }}">show</a>
+                    {% if app.user is same as(issue.user) %}
+                        <a href="{{ path('app_front_issue_edit', {'id': issue.id}) }}">edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_front_issue_new') }}">Create new</a>
+{% endblock %}
