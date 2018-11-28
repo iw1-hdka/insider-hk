@@ -37,4 +37,6 @@
     </div>
 
     <a href="{{ path('app_front_project_index') }}">back to list</a>
+
+    {{ include('front/comment/index.html.twig', {'comments': comments}) }}
 {% endblock %}
