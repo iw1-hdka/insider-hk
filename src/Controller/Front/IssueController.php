@@ -3,12 +3,14 @@
 namespace App\Controller\Front;
 
 use App\Entity\Issue;
+use App\Entity\Comment;
 use App\Form\IssueType;
+use App\Form\CommentType;
 use App\Repository\IssueRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/issue", name="issue_")
@@ -49,11 +51,29 @@ class IssueController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods="GET")
+     * @Route("/{id}", name="show", methods="GET|POST")
      */
-    public function show(Issue $issue): Response
+    public function show(Request $request, Issue $issue): Response
     {
-        return $this->render('front/issue/show.html.twig', ['issue' => $issue]);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setIssue($issue);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->render(
+            'front/issue/show.html.twig', 
+            [
+                'issue' => $issue, 
+                'comments' => $issue->getComments(), 
+                'form' => $form->createView()
+            ]
+        );
     }
 
     /**
